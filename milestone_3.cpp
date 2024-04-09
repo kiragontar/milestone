@@ -415,7 +415,6 @@ void display_menu() {
     std::cout << "4. Search for friends\n"; // This option searches for friends based on criteria
     std::cout << "5. Calculate BMI\n"; // This option calculates the BMI of a friend or user
     std::cout << "6. Read database\n"; // This option reads and displays the entire database
-    std::cout << "7. show save results files\n"; // this is made to store names of the new files so they will be able to be open due to the issues with library filesystem
     std::cout << "8. Drop database\n"; // This option deletes the entire database
     std::cout << "0. Exit\n"; // This option exits the program
     std::cout << "Enter your choice: "; // This prompts the user to enter a choice
@@ -444,15 +443,12 @@ int main() {
             delete_a_friend(); // This deletes a friend from the database
             break;
         case 4:
-            search_friends(); // This searches for friends based on criteria
-            break;
-        case 5:
             bmi_calculator_choice(); // This calculates BMI for a friend or the user
             break;
-        case 6:
+        case 5:
             read_database(); // This reads and displays the entire database
             break;
-        case 8:
+        case 6:
             drop_database(); // This deletes the entire database
             break;
         default:
