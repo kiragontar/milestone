@@ -1,6 +1,7 @@
 #include <iostream> // Library to help with input/output
 #include <fstream> // Library for file operations
 #include <string> // Library for manipulating strings
+#include <stdexcept> // Library to split grade
 #include <vector> // Library for arrays
 #include <limits> // Library for input validation
 #include <cctype> // Library for checking character types
@@ -9,8 +10,8 @@
 
 
 struct Friend {
-// Define a structure to represent attributes of a friend.
-// Includes fields for name, surname, age, weight, height, and grade.
+    // Define a structure to represent attributes of a friend.
+    // Includes fields for name, surname, age, weight, height, and grade.
     std::string name; // Friend's name
     std::string surname; // Friend's surname
     double age; // Friend's age
@@ -19,12 +20,13 @@ struct Friend {
     char grade; // Friend's grade
 };
 
+
 bool is_all_alpha(const std::string& str) {
-  // This function checks whether a given string contains only alphabetic characters.
-  // It iterates through each character in the string and checks if it is alphabetic.
-  // If any character is found that is not alphabetic, the function returns false,
-  // indicating that the string does not contain only alphabetic characters.
-  // If all characters in the string are alphabetic, the function returns true.
+    // This function checks whether a given string contains only alphabetic characters.
+    // It iterates through each character in the string and checks if it is alphabetic.
+    // If any character is found that is not alphabetic, the function returns false,
+    // indicating that the string does not contain only alphabetic characters.
+    // If all characters in the string are alphabetic, the function returns true.
 
     for (char c : str) {
         if (!std::isalpha(c)) {
@@ -35,11 +37,11 @@ bool is_all_alpha(const std::string& str) {
 }
 
 bool is_all_digit(const std::string& str) {
-  // This function checks whether a given string contains only numeric digits.
-  // It iterates through each character in the string and checks if it is a digit.
-  // If any character is found that is not a digit, the function returns false,
-  // indicating that the string does not contain only numeric digits.
-  // If all characters in the string are digits, the function returns true.
+    // This function checks whether a given string contains only numeric digits.
+    // It iterates through each character in the string and checks if it is a digit.
+    // If any character is found that is not a digit, the function returns false,
+    // indicating that the string does not contain only numeric digits.
+    // If all characters in the string are digits, the function returns true.
     for (char c : str) {
         if (!std::isdigit(c)) {
             return false; // Return false if any character is not a digit
@@ -92,7 +94,8 @@ void search_friends() {
                     matchingFriends.push_back(friendData); // Adding matching friend to vector
                 }
             }
-        } else if (variableToSearch == "Weight") {
+        }
+        else if (variableToSearch == "Weight") {
             double weight;
             std::cout << "Enter weight: ";
             std::cin >> weight; // User inputs weight to search for
@@ -104,7 +107,8 @@ void search_friends() {
                     matchingFriends.push_back(friendData); // Adding matching friend to vector
                 }
             }
-        } else if (variableToSearch == "Height") {
+        }
+        else if (variableToSearch == "Height") {
             double height;
             std::cout << "Enter height: ";
             std::cin >> height; // User inputs height to search for
@@ -116,7 +120,8 @@ void search_friends() {
                     matchingFriends.push_back(friendData); // Adding matching friend to vector
                 }
             }
-        } else if (variableToSearch == "Grade") {
+        }
+        else if (variableToSearch == "Grade") {
             char grade;
             std::cout << "Enter grade: ";
             std::cin >> grade; // User inputs grade to search for
@@ -129,7 +134,8 @@ void search_friends() {
                 }
             }
         }
-    } else if (searchChoice == "mult") {
+    }
+    else if (searchChoice == "mult") {
         double age = -1;
         double weight = -1;
         double height = -1;
@@ -162,7 +168,8 @@ void search_friends() {
                 matchingFriends.push_back(friendData); // Adding matching friend to vector
             }
         }
-    } else if (searchChoice == "exit") {
+    }
+    else if (searchChoice == "exit") {
         inputFile.close(); // Closing file
         return; // Exiting function
     }
@@ -170,11 +177,12 @@ void search_friends() {
 
     if (matchingFriends.empty()) {
         std::cout << "No friends found with the specified parameters." << std::endl;
-    } else {
+    }
+    else {
         std::cout << "Matching friends:\n";
         for (const auto& friendData : matchingFriends) {
             std::cout << friendData.name << " " << friendData.surname << " " << friendData.age << " "
-                      << friendData.weight << " " << friendData.height << " " << friendData.grade << std::endl;
+                << friendData.weight << " " << friendData.height << " " << friendData.grade << std::endl;
         }
 
         char saveChoice;
@@ -190,7 +198,7 @@ void search_friends() {
             if (outputFile.is_open()) {
                 for (const auto& friendData : matchingFriends) {
                     outputFile << friendData.name << " " << friendData.surname << " " << friendData.age << " "
-                               << friendData.weight << " " << friendData.height << " " << friendData.grade << std::endl;
+                        << friendData.weight << " " << friendData.height << " " << friendData.grade << std::endl;
                 }
                 outputFile.close();
                 std::cout << "Search results saved successfully." << std::endl;
@@ -200,18 +208,21 @@ void search_friends() {
                 if (databasesFile.is_open()) {
                     databasesFile << filename << std::endl;
                     databasesFile.close();
-                } else {
+                }
+                else {
                     std::cerr << "Error appending to databases file." << std::endl;
                 }
-            } else {
+            }
+            else {
                 std::cerr << "Unable to open file for writing." << std::endl;
             }
-        } else {
+        }
+        else {
             std::cerr << "Error saving search results." << std::endl;
         }
     }
 }
- 
+
 // Function to calculate BMI
 double calculate_bmi(double weight, double height) {
     // BMI formula: weight (kg) / (height (m) * height (m))
@@ -222,11 +233,14 @@ double calculate_bmi(double weight, double height) {
 std::string bmi_category(double bmi) {
     if (bmi < 18.5) {
         return "Underweight"; // BMI category: Underweight
-    } else if (bmi < 25) {
+    }
+    else if (bmi < 25) {
         return "Normal weight"; // BMI category: Normal weight
-    } else if (bmi < 30) {
+    }
+    else if (bmi < 30) {
         return "Overweight"; // BMI category: Overweight
-    } else {
+    }
+    else {
         return "Obesity"; // BMI category: Obesity
     }
 }
@@ -290,7 +304,7 @@ void calculate_bmi_for_friend() {
     while (std::getline(inputFile, line)) {
         std::istringstream iss(line);
         Friend friendDetails;
-      iss>> friendDetails.name >> friendDetails.surname >> friendDetails.age >> friendDetails.weight >> friendDetails.height >> friendDetails.grade;
+        iss >> friendDetails.name >> friendDetails.surname >> friendDetails.age >> friendDetails.weight >> friendDetails.height >> friendDetails.grade;
 
         // Check if details match the entered name and surname
         if (friendDetails.name == nameToCalculate && friendDetails.surname == surnameToCalculate) {
@@ -300,12 +314,12 @@ void calculate_bmi_for_friend() {
 
             // Print friend's details and calculated BMI
             std::cout << "Friend found:\n"
-                      << "Name: " << friendDetails.name << "\n"
-                      << "Surname: " << friendDetails.surname << "\n"
-                      << "Age: " << friendDetails.age << "\n"
-                      << "Weight: " << friendDetails.weight << " kg\n"
-                      << "Height: " << friendDetails.height << " cm\n"
-                      << "BMI: " << bmi << " (" << category << ")\n";
+                << "Name: " << friendDetails.name << "\n"
+                << "Surname: " << friendDetails.surname << "\n"
+                << "Age: " << friendDetails.age << "\n"
+                << "Weight: " << friendDetails.weight << " kg\n"
+                << "Height: " << friendDetails.height << " cm\n"
+                << "BMI: " << bmi << " (" << category << ")\n";
             break; // Exit the loop
         }
     }
@@ -329,7 +343,8 @@ void show_save_results_files() {
         }
         std::cout << "\n";
         databasesFile.close();
-    } else {
+    }
+    else {
         std::cerr << "Error opening databases file." << std::endl;
     }
 }
@@ -352,9 +367,10 @@ void open_database_file() {
         while (std::getline(inputFile, line)) {
             std::cout << line << std::endl;
         }
-      std::cout << "\n";
+        std::cout << "\n";
         inputFile.close();
-    } else {
+    }
+    else {
         std::cerr << "Error opening file." << std::endl;
     }
 }
@@ -371,22 +387,22 @@ void bmi_calculator_choice() {
         std::cout << "Enter your choice: ";
 
         do {
-        std::cin >> choice; // Input surname
+            std::cin >> choice; // Input surname
         } while (!is_all_digit(std::to_string(choice))); // Check if all characters are alphabetic
 
-         // Switch case for menu choices
+        // Switch case for menu choices
         switch (choice) {
-            case 0:
-                return;
-            case 1:
-                calculate_bmi_for_friend(); //Calls function to calculate bmi for a friend
-                return;
-            case 2:
-                just_bmi_calculator(); // Call normal BMI calculator
-                break;
-            default:
-                std::cout << "Invalid choice" << std::endl; // This prints an error message
-                break;
+        case 0:
+            return;
+        case 1:
+            calculate_bmi_for_friend(); //Calls function to calculate bmi for a friend
+            return;
+        case 2:
+            just_bmi_calculator(); // Call normal BMI calculator
+            break;
+        default:
+            std::cout << "Invalid choice" << std::endl; // This prints an error message
+            break;
         }
     }
 }
@@ -403,50 +419,73 @@ void add_a_friend() {
 
     Friend newFriend;
 
-    do {
-        std::cout << "Enter name: ";
-        std::cin >> newFriend.name;
-    } while (!is_all_alpha(newFriend.name)); // Input validation for name
+    std::cout << "Enter name (only alpabetic characters): ";
+    std::cin >> newFriend.name;
+    if (!is_all_alpha(newFriend.name)) {
+        do {
+            std::cout << "inputed data type error \n";
+            std::cout << "Enter name (only alpabetic characters): ";
+            std::cin >> newFriend.name;
+        } while (!is_all_alpha(newFriend.name)); // Input validation for name
 
-    do {
-        std::cout << "Enter surname: ";
-        std::cin >> newFriend.surname;
-    } while (!is_all_alpha(newFriend.surname)); // Input validation for surname
+    }
+    
+    std::cout << "Enter surname (only alpabetic characters): ";
+    std::cin >> newFriend.surname;
+    if (!is_all_alpha(newFriend.surname)) {
+        do {
+            std::cout << "inputed data type error \n";
+            std::cout << "Enter surname (only alpabetic characters): ";
+            std::cin >> newFriend.surname;
+        } while (!is_all_alpha(newFriend.surname)); // Input validation for surname
+    }
+    
+    std::string ageStr;
+    std::cout << "Enter age (only integers): ";
+    std::cin >> ageStr;
+    if (!is_all_digit(ageStr)) {
+        do {
+            std::cout << "inputed data type error \n";
+            std::cout << "Enter age (only integers): ";
+            std::cin >> ageStr;
+        } while (!is_all_digit(ageStr)); // Input validation for age
+    }
+    newFriend.age = std::stod(ageStr);
+    
+    std::string weightStr;
+    std::cout << "Enter weight in kg (enter only integers, use '.' for decimals example: 70.6): ";
+    std::cin >> weightStr;
+    if (weightStr.find_first_not_of("0123456789.") != std::string::npos) {
+        do {
+            std::cout << "inputed data type error \n";
+            std::cout << "Enter weight in kg (enter only integers, use '.' for decimals example: 70.6): ";
+            std::cin >> weightStr;
+        } while (weightStr.find_first_not_of("0123456789.") != std::string::npos); // Input validation for weight
+    }
+    newFriend.weight = std::stod(weightStr);
 
-    do {
-        std::string ageStr;
-        std::cout << "Enter age: ";
-        std::cin >> ageStr;
-        if (is_all_digit(ageStr)) {
-            newFriend.age = std::stod(ageStr);
-            break;
-        }
-    } while (true); // Input validation for age
+    std::string heightStr;
+    std::cout << "Enter height in cm (enter only integers, use '.' for decimals example: 180.6): ";
+    std::cin >> heightStr; 
+    if (heightStr.find_first_not_of("0123456789.") != std::string::npos) {
+        do {
+            std::cout << "inputed data type error \n";
+            std::cout << "Enter height in cm (enter only integers, use '.' for decimals example: 180.6): ";
+            std::cin >> heightStr;
+        } while (heightStr.find_first_not_of("0123456789.") != std::string::npos); // Input validation for height
+    }
+    newFriend.height = std::stod(heightStr);
 
-    do {
-        std::string weightStr;
-        std::cout << "Enter weight (kg): ";
-        std::cin >> weightStr;
-        if (is_all_digit(weightStr)) {
-            newFriend.weight = std::stod(weightStr);
-            break;
-        }
-    } while (true); // Input validation for weight
 
-    do {
-        std::string heightStr;
-        std::cout << "Enter height (cm): ";
-        std::cin >> heightStr;
-        if (heightStr.find_first_not_of("0123456789.") == std::string::npos) {
-            newFriend.height = std::stod(heightStr);
-            break;
-        }
-    } while (true); // Input validation for height
+    std::string gradeStr;
+    std::cout << "Enter grade (either a single uppercase letter or an uppercase letter followed by a '+' or '-' symbol): ";
+    std::cin >> gradeStr;
+    while (gradeStr.size() != 1 || (!std::isupper(gradeStr[0]) && gradeStr[1] != '+' && gradeStr[1] != '-')) {
+        std::cout << "Invalid input. Enter grade (either a single uppercase letter or an uppercase letter followed by a '+' or '-' symbol): ";
+        std::cin >> gradeStr; // Input validation for grade 
+    }
+    newFriend.grade = gradeStr[0];
 
-    do {
-        std::cout << "Enter grade (a single capital letter): ";
-        std::cin >> newFriend.grade;
-    } while (!std::isalpha(newFriend.grade) || !std::isupper(newFriend.grade)); // Ensure it's a single capital letter
 
     // Write friend details to file
     outputFile << newFriend.name << " " << newFriend.surname << " " << newFriend.age << " " << newFriend.weight << " " << newFriend.height << " " << newFriend.grade << std::endl;
@@ -609,65 +648,65 @@ void load_database_sample() {
 
 // Function to display the main menu
 void display_menu() {
-  // Display the main menu options
-  std::cout << "Choose an option below:\n"; // This prompts the user
-  std::cout << "1. Load database sample\n";
-  std::cout << "2. Add a friend\n"; // This option adds a friend to the database
-  std::cout << "3. Delete a friend\n"; // This option deletes a friend from the database
-  std::cout << "4. Search for friends\n"; // This option searches for friends based on criteria
-  std::cout << "5. Calculate BMI\n"; // This option calculates the BMI of a friend or user
-  std::cout << "6. Read database\n"; // This option reads and displays the entire database
-  std::cout << "7. show save results files\n"; // this is made to store names of the new files so they will be able to be open due to the issues with library filesystem
-  std::cout << "8. Drop database\n"; // This option deletes the entire database
-  std::cout << "0. Exit\n"; // This option exits the program
-  std::cout << "Enter your choice: "; // This prompts the user to enter a choice
+    // Display the main menu options
+    std::cout << "Choose an option below:\n"; // This prompts the user
+    std::cout << "1. Load database sample\n";
+    std::cout << "2. Add a friend\n"; // This option adds a friend to the database
+    std::cout << "3. Delete a friend\n"; // This option deletes a friend from the database
+    std::cout << "4. Search for friends\n"; // This option searches for friends based on criteria
+    std::cout << "5. Calculate BMI\n"; // This option calculates the BMI of a friend or user
+    std::cout << "6. Read database\n"; // This option reads and displays the entire database
+    std::cout << "7. show save results files\n"; // this is made to store names of the new files so they will be able to be open due to the issues with library filesystem
+    std::cout << "8. Drop database\n"; // This option deletes the entire database
+    std::cout << "0. Exit\n"; // This option exits the program
+    std::cout << "Enter your choice: "; // This prompts the user to enter a choice
 }
 
 int main() {
-  int choice; // This stores the user choice
-  std::ifstream checkFile("databases.txt");; // To create "txt filemanager"
-  if (!checkFile) {
-      std::ofstream outputFile("databases.txt");
-      outputFile.close();
-  }
-  // Main menu loop
-  while (true) {
-    display_menu(); // This displays the main menu
-    std::cin >> choice; // This inputs the user choice
-
-    // Switch case for menu choices
-    switch (choice) {
-      case 0:
-        std::cout << "Exiting program." << std::endl; // This prints a message
-        return 0; // This exits the program
-      case 1:
-        load_database_sample(); // This loads the initial sample data into the database
-        break;
-      case 2:
-        add_a_friend(); // This adds a friend to the database
-        break;
-      case 3:
-        delete_a_friend(); // This deletes a friend from the database
-        break;
-      case 4:
-        search_friends(); // This searches for friends based on criteria
-        break;
-      case 5:
-        bmi_calculator_choice(); // This calculates BMI for a friend or the user
-        break;
-      case 6:
-        read_database(); // This reads and displays the entire database
-        break;
-      case 7:
-        show_save_results_files(); // saves names of results files
-        open_database_file();
-        break;
-      case 8:
-        drop_database(); // This deletes the entire database
-        break;
-      default:
-        std::cout << "Invalid choice" << std::endl; // This prints an error message
-        break;
+    int choice; // This stores the user choice
+    std::ifstream checkFile("databases.txt");; // To create "txt filemanager"
+    if (!checkFile) {
+        std::ofstream outputFile("databases.txt");
+        outputFile.close();
     }
-  }
+    // Main menu loop
+    while (true) {
+        display_menu(); // This displays the main menu
+        std::cin >> choice; // This inputs the user choice
+
+        // Switch case for menu choices
+        switch (choice) {
+        case 0:
+            std::cout << "Exiting program." << std::endl; // This prints a message
+            return 0; // This exits the program
+        case 1:
+            load_database_sample(); // This loads the initial sample data into the database
+            break;
+        case 2:
+            add_a_friend(); // This adds a friend to the database
+            break;
+        case 3:
+            delete_a_friend(); // This deletes a friend from the database
+            break;
+        case 4:
+            search_friends(); // This searches for friends based on criteria
+            break;
+        case 5:
+            bmi_calculator_choice(); // This calculates BMI for a friend or the user
+            break;
+        case 6:
+            read_database(); // This reads and displays the entire database
+            break;
+        case 7:
+            show_save_results_files(); // saves names of results files
+            open_database_file();
+            break;
+        case 8:
+            drop_database(); // This deletes the entire database
+            break;
+        default:
+            std::cout << "Invalid choice" << std::endl; // This prints an error message
+            break;
+        }
+    }
 }
