@@ -1,3 +1,4 @@
+
 #include <iostream> // Library to help with input/output
 #include <fstream> // Library for file operations
 #include <string> // Library for manipulating strings
@@ -6,7 +7,6 @@
 #include <limits> // Library for input validation
 #include <cctype> // Library for checking character types
 #include <sstream> // Library for string streams
-#include <filesystem> // Library for filesystem operations
 
 
 struct Friend {
@@ -17,7 +17,7 @@ struct Friend {
     double age; // Friend's age
     double weight; // Friend's weight
     double height; // Friend's height
-    char grade; // Friend's grade
+    std::string grade; // Friend's grade
 };
 
 
@@ -50,6 +50,18 @@ bool is_all_digit(const std::string& str) {
     return true; // Return true if all characters are digits
 }
 
+bool is_valid_grade(const std::string& grade) {
+    if (grade.size() == 1) {
+        return std::isupper(grade[0]); // Single uppercase letter
+    }
+    else if (grade.size() == 2) {
+        char letter = grade[0];
+        char symbol = grade[1];
+        return std::isupper(letter) && (symbol == '+' || symbol == '-');
+    }
+    return false;
+}
+
 void search_friends() {
     // This function searches for friends based on specified criteria.
     // It reads data from a file containing friends' information and allows the user to search for friends
@@ -66,113 +78,139 @@ void search_friends() {
     std::string line; // Variable to store each line from the file
     std::vector<Friend> matchingFriends; // Vector to store matching friends
 
-    std::cout << "Criteria for searching friends:\n"; // Displaying search criteria
-    std::cout << "1. Age\n";
-    std::cout << "2. Weight\n";
-    std::cout << "3. Height\n";
-    std::cout << "4. Grade\n";
 
-    std::string searchChoice; // Variable to store user's search choice
-    std::cout << "Do you want to search based on one or multiple criteria? (one/mult/exit): ";
-    std::cin >> searchChoice; // User inputs search choice
+    
 
-    if (searchChoice == "one") {
-        std::string variableToSearch; // Variable to store the variable to search for
-        std::cout << "Enter the variable to search: ";
-        std::cin >> variableToSearch; // User inputs variable to search for
+    
+    while (true) {
 
-        // Handling different search criteria
-        if (variableToSearch == "Age") {
-            double age;
-            std::cout << "Enter age: ";
-            std::cin >> age; // User inputs age to search for
-            while (std::getline(inputFile, line)) {
-                std::istringstream iss(line);
-                Friend friendData;
-                iss >> friendData.name >> friendData.surname >> friendData.age >> friendData.weight >> friendData.height >> friendData.grade;
-                if (friendData.age == age) {
-                    matchingFriends.push_back(friendData); // Adding matching friend to vector
+        std::string searchChoice; // Variable to store user's search choice 
+        std::cout << "Do you want to search based on one or multiple criteri? (one/mult/exit): ";
+        std::cin >> searchChoice; // User inputs search choice
+
+        if (searchChoice == "One" || searchChoice == "one" ) {
+            while (true) {
+                std::string variableToSearch; // Variable to store the variable to search for
+                std::cout << "Enter the variable to search (as a text): ";
+                std::cout << "Age\n";
+                std::cout << "Weight\n";
+                std::cout << "Height\n";
+                std::cout << "Grade\n";
+                std::cout << "Exit to go back to the main menu\n";
+                std::cout << "\n";
+                std::cin >> variableToSearch; // User inputs variable to search for
+
+                // Handling different search criteria
+                if (variableToSearch == "Age" || variableToSearch == "age") {
+                    double age;
+                    std::cout << "Enter age: ";
+                    std::cin >> age; // User inputs age to search for
+
+
+                    while (std::getline(inputFile, line)) {
+                        std::istringstream iss(line);
+                        Friend friendData;
+                        iss >> friendData.name >> friendData.surname >> friendData.age >> friendData.weight >> friendData.height >> friendData.grade;
+                        if (friendData.age == age) {
+                            matchingFriends.push_back(friendData); // Adding matching friend to vector
+                        }
+                    }
+                    break;
+                }
+                else if (variableToSearch == "Weight" || variableToSearch == "weight") {
+                    double weight;
+                    std::cout << "Enter weight: ";
+                    std::cin >> weight; // User inputs weight to search for
+                    while (std::getline(inputFile, line)) {
+                        std::istringstream iss(line);
+                        Friend friendData;
+                        iss >> friendData.name >> friendData.surname >> friendData.age >> friendData.weight >> friendData.height >> friendData.grade;
+                        if (friendData.weight == weight) {
+                            matchingFriends.push_back(friendData); // Adding matching friend to vector
+                        }
+                    }
+                    break;
+                }
+                else if (variableToSearch == "Height" || variableToSearch == "height") {
+                    double height;
+                    std::cout << "Enter height: ";
+                    std::cin >> height; // User inputs height to search for
+                    while (std::getline(inputFile, line)) {
+                        std::istringstream iss(line);
+                        Friend friendData;
+                        iss >> friendData.name >> friendData.surname >> friendData.age >> friendData.weight >> friendData.height >> friendData.grade;
+                        if (friendData.height == height) {
+                            matchingFriends.push_back(friendData); // Adding matching friend to vector
+                        }
+                    }
+                    break;
+                }
+                else if (variableToSearch == "Grade" || variableToSearch == "grade") {
+                    std::string grade;
+                    std::cout << "Enter grade: ";
+                    std::cin >> grade; // User inputs grade to search for
+                    while (std::getline(inputFile, line)) {
+                        std::istringstream iss(line);
+                        Friend friendData;
+                        iss >> friendData.name >> friendData.surname >> friendData.age >> friendData.weight >> friendData.height >> friendData.grade;
+                        if (friendData.grade == grade) {
+                            matchingFriends.push_back(friendData); // Adding matching friend to vector
+                        }
+                    }
+                    break;
+                }
+                else if (variableToSearch == "Exit" || variableToSearch == "exit") {
+                    return; // Exiting function
+                }
+                else {
+                    std::cout << "error, please select one of the following options.";
                 }
             }
         }
-        else if (variableToSearch == "Weight") {
-            double weight;
-            std::cout << "Enter weight: ";
-            std::cin >> weight; // User inputs weight to search for
+        else if (searchChoice == "Mult" || searchChoice == "multi") {
+            double age = -1;
+            double weight = -1;
+            double height = -1;
+            std::string grade = "";
+
+            std::cout << "Enter age (or -1 to skip): ";
+            std::cin >> age;
+            std::cout << "Enter weight (or -1 to skip): ";
+            std::cin >> weight;
+            std::cout << "Enter height (or -1 to skip): ";
+            std::cin >> height;
+            std::cout << "Enter grade (or None to skip(press enter)): ";
+            std::cin >> grade;
+
             while (std::getline(inputFile, line)) {
+                // While iterating through each line of the file, this block of code extracts friend data from the line.
+                // It then checks if the extracted friend's attributes match the criteria specified by the user (age, weight, height, grade).
+                // If any of the criteria are specified as -1 or '\0' (indicating that the user skipped that criterion), the corresponding match variable is set to true.
+                // If all criteria match (or are skipped), the friend data is added to the vector of matching friends.
                 std::istringstream iss(line);
                 Friend friendData;
                 iss >> friendData.name >> friendData.surname >> friendData.age >> friendData.weight >> friendData.height >> friendData.grade;
-                if (friendData.weight == weight) {
+                // Matching criteria for age, weight, height, and grade
+                bool ageMatch = (age == -1 || friendData.age == age);
+                bool weightMatch = (weight == -1 || friendData.weight == weight);
+                bool heightMatch = (height == -1 || friendData.height == height);
+                bool gradeMatch = (grade == "None" || friendData.grade == grade);
+
+                if (ageMatch && weightMatch && heightMatch && gradeMatch) {
                     matchingFriends.push_back(friendData); // Adding matching friend to vector
                 }
             }
+            break;
         }
-        else if (variableToSearch == "Height") {
-            double height;
-            std::cout << "Enter height: ";
-            std::cin >> height; // User inputs height to search for
-            while (std::getline(inputFile, line)) {
-                std::istringstream iss(line);
-                Friend friendData;
-                iss >> friendData.name >> friendData.surname >> friendData.age >> friendData.weight >> friendData.height >> friendData.grade;
-                if (friendData.height == height) {
-                    matchingFriends.push_back(friendData); // Adding matching friend to vector
-                }
-            }
+        else if (searchChoice == "Exit" || searchChoice == "exit") {
+            inputFile.close(); // Closing file
+            return; // Exiting function
         }
-        else if (variableToSearch == "Grade") {
-            char grade;
-            std::cout << "Enter grade: ";
-            std::cin >> grade; // User inputs grade to search for
-            while (std::getline(inputFile, line)) {
-                std::istringstream iss(line);
-                Friend friendData;
-                iss >> friendData.name >> friendData.surname >> friendData.age >> friendData.weight >> friendData.height >> friendData.grade;
-                if (friendData.grade == grade) {
-                    matchingFriends.push_back(friendData); // Adding matching friend to vector
-                }
-            }
+        else {
+            std::cout << "error, please select one of the following options.";
         }
     }
-    else if (searchChoice == "mult") {
-        double age = -1;
-        double weight = -1;
-        double height = -1;
-        char grade = '\0';
 
-        std::cout << "Enter age (or -1 to skip): ";
-        std::cin >> age;
-        std::cout << "Enter weight (or -1 to skip): ";
-        std::cin >> weight;
-        std::cout << "Enter height (or -1 to skip): ";
-        std::cin >> height;
-        std::cout << "Enter grade (or '0' to skip): ";
-        std::cin >> grade;
-
-        while (std::getline(inputFile, line)) {
-            // While iterating through each line of the file, this block of code extracts friend data from the line.
-            // It then checks if the extracted friend's attributes match the criteria specified by the user (age, weight, height, grade).
-            // If any of the criteria are specified as -1 or '\0' (indicating that the user skipped that criterion), the corresponding match variable is set to true.
-            // If all criteria match (or are skipped), the friend data is added to the vector of matching friends.
-            std::istringstream iss(line);
-            Friend friendData;
-            iss >> friendData.name >> friendData.surname >> friendData.age >> friendData.weight >> friendData.height >> friendData.grade;
-            // Matching criteria for age, weight, height, and grade
-            bool ageMatch = (age == -1 || friendData.age == age);
-            bool weightMatch = (weight == -1 || friendData.weight == weight);
-            bool heightMatch = (height == -1 || friendData.height == height);
-            bool gradeMatch = (grade == '\0' || friendData.grade == grade);
-
-            if (ageMatch && weightMatch && heightMatch && gradeMatch) {
-                matchingFriends.push_back(friendData); // Adding matching friend to vector
-            }
-        }
-    }
-    else if (searchChoice == "exit") {
-        inputFile.close(); // Closing file
-        return; // Exiting function
-    }
     inputFile.close();
 
     if (matchingFriends.empty()) {
@@ -419,39 +457,29 @@ void add_a_friend() {
 
     Friend newFriend;
 
-    std::cout << "Enter name (only alpabetic characters): ";
+    std::cout << "Enter name (only alphabetic characters): ";
     std::cin >> newFriend.name;
-    if (!is_all_alpha(newFriend.name)) {
-        do {
-            std::cout << "inputed data type error \n";
-            std::cout << "Enter name (only alpabetic characters): ";
-            std::cin >> newFriend.name;
-        } while (!is_all_alpha(newFriend.name)); // Input validation for name
+    while (!is_all_alpha(newFriend.name)) {
+        std::cout << "Invalid input. Enter name (only alphabetic characters): ";
+        std::cin >> newFriend.name; // Input validation for name
+    }
 
-    }
-    
-    std::cout << "Enter surname (only alpabetic characters): ";
+    std::cout << "Enter surname (only alphabetic characters): ";
     std::cin >> newFriend.surname;
-    if (!is_all_alpha(newFriend.surname)) {
-        do {
-            std::cout << "inputed data type error \n";
-            std::cout << "Enter surname (only alpabetic characters): ";
-            std::cin >> newFriend.surname;
-        } while (!is_all_alpha(newFriend.surname)); // Input validation for surname
+    while (!is_all_alpha(newFriend.surname)) {
+        std::cout << "Invalid input. Enter surname (only alphabetic characters): ";
+        std::cin >> newFriend.surname; // Input validation for surname
     }
-    
+
     std::string ageStr;
     std::cout << "Enter age (only integers): ";
     std::cin >> ageStr;
-    if (!is_all_digit(ageStr)) {
-        do {
-            std::cout << "inputed data type error \n";
-            std::cout << "Enter age (only integers): ";
-            std::cin >> ageStr;
-        } while (!is_all_digit(ageStr)); // Input validation for age
+    while (!is_all_digit(ageStr)) {
+        std::cout << "Invalid input. Enter age (only integers): ";
+        std::cin >> ageStr; // Input validation for age
     }
     newFriend.age = std::stod(ageStr);
-    
+
     std::string weightStr;
     std::cout << "Enter weight in kg (enter only integers, use '.' for decimals example: 70.6): ";
     std::cin >> weightStr;
@@ -466,7 +494,7 @@ void add_a_friend() {
 
     std::string heightStr;
     std::cout << "Enter height in cm (enter only integers, use '.' for decimals example: 180.6): ";
-    std::cin >> heightStr; 
+    std::cin >> heightStr;
     if (heightStr.find_first_not_of("0123456789.") != std::string::npos) {
         do {
             std::cout << "inputed data type error \n";
@@ -476,15 +504,18 @@ void add_a_friend() {
     }
     newFriend.height = std::stod(heightStr);
 
+    do {
+        std::cout << "Enter grade (either a single uppercase letter or an uppercase letter followed by a '+' or '-' symbol): ";
+        std::cin >> newFriend.grade;
 
-    std::string gradeStr;
-    std::cout << "Enter grade (either a single uppercase letter or an uppercase letter followed by a '+' or '-' symbol): ";
-    std::cin >> gradeStr;
-    while (gradeStr.size() != 1 || (!std::isupper(gradeStr[0]) && gradeStr[1] != '+' && gradeStr[1] != '-')) {
-        std::cout << "Invalid input. Enter grade (either a single uppercase letter or an uppercase letter followed by a '+' or '-' symbol): ";
-        std::cin >> gradeStr; // Input validation for grade 
-    }
-    newFriend.grade = gradeStr[0];
+        if (!is_valid_grade(newFriend.grade)) {
+            std::cout << "Invalid grade input.\n";
+            continue;
+        }
+
+        break; // Valid grade input, exit loop
+    } while (true);
+
 
 
     // Write friend details to file
@@ -570,7 +601,7 @@ void read_database() {
     }
 
     // Print out the friend details
-    for (int j = 0; j < i; ++j) {
+    for (int j = 0; j < i; ++j) { //in this case i a.k.a. number between [] in friends[] line 588 
         std::cout << "Name: " << friends[j].name << " " << friends[j].surname << std::endl;
         std::cout << "Age: " << friends[j].age << std::endl;
         std::cout << "Weight: " << friends[j].weight << std::endl;
@@ -590,27 +621,34 @@ void drop_database() {
     // Attempt to drop the file
     // Confirm dropping database
     char confirm; // This stores the confirmation choice
-    std::cout << "Are you sure you want to drop your database? (y/n): ";
-    std::cin >> confirm; // This inputs the confirmation
-
-    if (confirm == 'y' || confirm == 'Y') {
-        if (std::remove(filename.c_str()) != 0) {
-            std::cerr << "Error deleting database file" << std::endl; // This prints an error message
+    while (true) {
+        std::cout << "Are you sure you want to drop your database? (Yes/No): ";
+        std::cin >> confirm; // This inputs the confirmation
+        if (confirm == 'Yes' || confirm == 'yes') {
+            if (std::remove(filename.c_str()) != 0) {
+                std::cerr << "Error deleting database file" << std::endl; // This prints an error message
+            }
+            else {
+                std::cout << "Database file deleted successfully" << std::endl; // This prints a success message
+            }
+            break;
+        }
+        else if (confirm == 'No' || confirm == 'no') {
+            std::cout << "Deletion cancelled." << std::endl; // This prints a cancellation message
+            return; //leave the function
         }
         else {
-            std::cout << "Database file deleted successfully" << std::endl; // This prints a success message
+            std::cerr << "Error, please enter Yes to drop the database and No to exit to the main menue." << std::endl; // This prints a cancellation message
         }
     }
-    else {
-        std::cout << "Deletion cancelled." << std::endl; // This prints a cancellation message
-    }
+    
     inputFile.close(); // This closes the file
 }
 
 // Function to create initial database if it doesn't exist
 void load_database_sample() {
     std::string filename = "friends_database.txt"; // This defines the name of the database file
-    std::ifstream inputFile(filename); // This checks if file exists
+    std::ifstream inputFile(filename); // This if for check if file exists
 
     // Check if file already exists
     if (inputFile.good()) {
