@@ -1,4 +1,3 @@
-
 #include <iostream> // Library to help with input/output
 #include <fstream> // Library for file operations
 #include <string> // Library for manipulating strings
